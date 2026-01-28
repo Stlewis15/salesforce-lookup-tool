@@ -1,85 +1,90 @@
-# 🚀 Salesforce Lookup Tool  
+# 🚀 Salesforce Lookup Tool (Python + CustomTkinter + OAuth) 
 ### Author: [Lewis Stargill (Stlewis15)](https://github.com/Stlewis15)
 
-## 🧩 Project Overview
-The **Salesforce Lookup Tool** is a custom-built desktop application designed to simplify internal Salesforce data lookups through a user-friendly GUI.  
-It was originally developed as part of an engineering initiative to reduce manual Salesforce queries, streamline construction and sales request lookups,  
-and improve visibility into customer data — all without requiring users to log directly into Salesforce.
+---
 
-Built with **Python**, **CustomTkinter**, and **Salesforce OAuth (OneLogin SSO)** authentication,  
-this tool combines secure access control with a modern interface that is simple, fast, and reliable.
+## 🧠 Overview
+
+The **Salesforce Lookup Tool** is a Python-based desktop application built to help engineering and sales teams quickly search Salesforce records (Construction Requests, Inside Wiring Surveys, and Phone Line Details) without logging into the Salesforce web UI.
+
+Originally designed for **WOW! (WideOpenWest)** engineers, this tool provided a **fast, lightweight, and secure GUI** alternative for querying Salesforce Lighting data using **OAuth2 with OneLogin SSO**.
 
 ---
 
-## ⚙️ Key Features
-- 🔐 **Secure OAuth 2.0 (OneLogin SSO)** authentication — No direct credential storage or token exposure.  
-- 🧑‍💻 **Modern CustomTkinter GUI** — Flat, responsive interface with dynamic dark/light mode.  
-- 🧾 **Real-time Salesforce Queries** — Fetches data from Construction, Sales Requests, and Phone Line Detail objects.  
-- 📁 **Data Export Options** — Export results easily to `.csv` or `.xlsx` formats for reporting.  
-- 👤 **User Awareness** — Displays the logged-in user name via OneLogin.  
-- 🟧 **Custom Branding** — Includes WOW! Business logo banner and corporate color scheme.  
-- 🖥️ **Resizable Interface** — Logo dynamically scales with window resize events.
+## 🧩 Key Features
+
+✅ **Modern GUI:**  
+Built using [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) — a modern, customizable Python GUI framework that makes Tkinter interfaces sleek and professional.
+
+✅ **Secure Salesforce OAuth2 Authentication:**  
+Integrates with **OneLogin SSO** using Salesforce’s OAuth2 API for safe, user-based authentication — no hardcoded passwords or tokens.
+
+✅ **Dynamic Queries:**  
+Users can quickly pull Salesforce data from three major object groups:
+- 🏗️ `Construction__c` – Construction and Part Quote Requests  
+- 🔌 `Sales_Request__c` – Inside Wiring and SRQs  
+- ☎️ `Phone_Line_Detail__c` – Hosted VoIP line details
+
+✅ **Smart Filtering:**  
+Search by **address**, **phone number**, or **partial matches** for flexible and human-friendly querying.
+
+✅ **Data Export:**  
+Instantly export query results to `.csv` or `.xlsx` format for use in Excel or reports.
+
+✅ **User-Specific Login:**  
+Displays the logged-in user's name (via SSO) dynamically on the app window.
+
+✅ **Session Controls:**  
+Includes a clean **Logout** button and session clearing to maintain Salesforce data security.
 
 ---
 
-## 🧠 Why This Tool Was Built
-While working with the **WOW! Engineering Team**, Salesforce users often needed to perform  
-construction cost checks, sales request validations, and phone line lookups directly —  
-but without accessing Salesforce’s browser interface.
+## 💡 Technical Highlights
 
-This desktop tool provides a **simplified, read-only view** of Salesforce data,  
-integrated securely through **SSO** and **Connected App** configuration.  
-The project also served as a **Python GUI learning and automation prototype**,  
-demonstrating how internal tools can be rapidly developed for enterprise efficiency.
+This project demonstrates practical use of **Python** in real enterprise workflows.
 
----
-
-## 🏗️ Technical Stack
-| Component | Description |
-|------------|-------------|
-| **Language** | Python 3.x |
-| **GUI Framework** | [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) |
-| **API Access** | Salesforce REST API (via `simple_salesforce` + OAuth2Session) |
-| **Data Handling** | `pandas` for structured data and exports |
-| **SSO Auth** | OneLogin SSO → Salesforce Connected App (OAuth2 flow) |
-| **UI Enhancements** | PIL for image handling (logo/banner resizing) |
-| **Deployment** | Desktop application (can be compiled into .exe with PyInstaller) |
+| Category | Technology / Concept | Description |
+|-----------|----------------------|--------------|
+| 🖥️ GUI Framework | **CustomTkinter** | Used for building a clean, modern interface (light/dark themes, responsive layout). |
+| 🔐 Authentication | **Salesforce OAuth2 + OneLogin SSO** | Enables secure login via browser — no manual tokens required. |
+| 🔗 API Access | **Simple-Salesforce** | Python package for querying Salesforce using SOQL statements. |
+| 📊 Data Handling | **Pandas DataFrame** | Organizes Salesforce query results into tabular data for easy export and display. |
+| 💾 Export Formats | **CSV / Excel Writer** | Users can save data directly to Excel or CSV from within the app. |
+| 🧠 Programming Concepts | Functions, Classes, Exception Handling | Demonstrates modular programming, error handling, and event-driven design. |
 
 ---
 
-## 📸 Screenshots
+## 🧱 Architecture
 
-### 🔹 OAuth Login Screen (SSO)
-![OAuth Login Screen](screenshots/v2_oauth_onelogin_screen.png)
+**Core File:**  
+`main_oauth.py` — contains all GUI, authentication, and query logic.  
 
-### 🔹 Legacy Salesforce Token Login (v1)
-![Legacy Salesforce Token Login](screenshots/v1_salesforce_token_login.png)
+**Key Components:**
+- `connect_salesforce_oauth()` → handles SSO OAuth login flow  
+- `SalesforceApp()` → main class that controls GUI  
+- `query_construction()`, `query_sales_requests()`, `query_phone_lines()` → SOQL data retrieval  
+- `export_to_csv()` & `export_to_excel()` → data export functions  
+
+---
+
+## 🧭 Example Screenshots
 
 ### 🔹 Query Interface
-![Query Interface](screenshots/app_ui_query.png)
+![Query Window](screenshots/app_ui_query.png)
+
+### 🔹 Legacy Salesforce Token Login (v1)
+![Legacy Token Login](screenshots/v1_salesforce_token_login.png)
+
+### 🔹 Updated OneLogin SSO OAuth (v2)
+![OAuth Login](screenshots/v2_oauth_onelogin_screen.png)
 
 ---
 
-## 🔑 Login Flow (Simplified)
-1. The user clicks **“Login with Salesforce SSO”**.  
-2. The app launches the OneLogin authorization page.  
-3. Upon successful authentication, Salesforce returns a **redirected OAuth token**.  
-4. The app exchanges that token for an **access token** and retrieves user info.  
-5. The GUI displays *“You are now logged in as John D.”* and allows data queries.  
+## 🔧 How to Run Locally
 
----
+**Requirements:**
+- Python 3.10+
+- Installed modules:
+  ```bash
+  pip install customtkinter simple-salesforce pandas requests requests-oauthlib pillow
 
-## 🧰 Example Queries
-- **Construction__c** → Cost and transport data by address.  
-- **Sales_Request__c** → Sales request type, assigned rep, and cost fields.  
-- **Phone_Line_Detail__c** → Hosted VOIP customer and hunt group information.  
-
-Each query returns up to 200 results and displays them in an interactive table  
-with export capabilities.
-
----
-
-## 🪄 How It Works (High-Level)
-```python
-sf = Salesforce(instance_url=token["instance_url"], session_id=token["access_token"])
-data = sf.query_all("SELECT Name, Address__c FROM Construction__c LIMIT 200")
