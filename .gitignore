@@ -41,7 +41,7 @@ dist/
 # Commented out if you want to keep them visible
 #!wow_banner.png
 #!wow.ico
-screenshots/
+#!screenshots/
 
 # ---- Documents & Archives ----
 *.docx
